@@ -1,8 +1,6 @@
 var canvas = document.querySelector('#canvas'),
     context = canvas.getContext('2d'),
 
-    thrusterCanvas = document.querySelector('#thrusterCanvas'),
-    thrusterContext = thrusterCanvas.getContext('2d'),
 		treeImage = new Image(),
     RIGHT = 1,
     LEFT = 2,
@@ -18,7 +16,7 @@ var canvas = document.querySelector('#canvas'),
 		LEAF_ANIMATION_TIME = 6,
     fps = 60,
 
-    PLATFORM_HEIGHT_IN_METERS = 25, // 10 meters
+    PLATFORM_HEIGHT_IN_METERS = 5, // 10 meters
     pixelsPerMeter = (canvas.height) /
                       PLATFORM_HEIGHT_IN_METERS,
 
@@ -59,13 +57,16 @@ var canvas = document.querySelector('#canvas'),
             sprite.top += sprite.velocityY / fps;
             sprite.velocityY = GRAVITY_FORCE *
                (sprite.animationTimer.getElapsedTime()/1000) * pixelsPerMeter;
-						console.log('velocityY is ' + sprite.velocityY/fps);
+						//console.log('velocityY is ' + sprite.velocityY/fps);
+						//console.log('sprite visibility is ' + sprite.visible);
+						//console.log('sprite animating is ' + sprite.animating);
 
             if (sprite.top > canvas.height) {
 							 sprite.animationTimer.stop();
 							 //sprite.pushAnimationTimer.stop();
 							 console.log('stopping leaf animation');
 							 console.log('at ' + sprite.top);
+							 console.log('velocity at ' + (sprite.velocityY/fps));
 							 sprite.animating = false;
 
 							 //sprite.left = LEDGE_LEFT + LEDGE_WIDTH/2 - BALL_RADIUS;
@@ -90,7 +91,7 @@ function paintLeaf(sprite, context) {
 	//context.arcTo(15, 15, 15 + LEAF_LENGTH, 15, LEAF_HEIGHT);
 	//context.arcTo(15, 15, 15 + LEAF_LENGTH, 15, LEAF_HEIGHT);
 	//context.moveTo(15 + LEAF_HEIGHT, 15 + LEAF_HEIGHT);
-	if( sprite.rotationTimer.isRunning() ) {
+	/*if( sprite.rotationTimer.isRunning() ) {
 		var clockwise = true;
 		var angle = Math.PI / 16;
 		var sin = clockwise ? Math.sin(angle): Math.sin(-angle);
@@ -98,7 +99,7 @@ function paintLeaf(sprite, context) {
 		console.log("calling rotate");
 		context.rotate( angle );
 		//context.transform( cos, sin, -sin, cos, 0 , 0);
-	}
+	}*/
 	context.arc(sprite.left + LEAF_HEIGHT, sprite.top + LEAF_HEIGHT,
 							 LEAF_HEIGHT, 0, Math.PI/2, false);
 	context.clip();
@@ -238,8 +239,8 @@ function generateLeaf() {
   leaf['animationTimer'] = new AnimationTimer(LEAF_ANIMATION_TIME);
   leaf['rotationTimer'] = new AnimationTimer('1');
 	leaf['rotatingBegin'] = Math.floor( Math.random() * LEAF_ANIMATION_TIME ) * 1000;
-	console.log('rotate begin at ');
-	console.log(leaf.rotatingBegin);
+	//console.log('rotate begin at ');
+	//console.log(leaf.rotatingBegin);
 	leaf.animationTimer.start();  //start the animation but not rotating
   //leaf.fallingAnimationTimer.start()
   leaf['pushDirection'] = Math.floor( (Math.random() * 2) + 1);
@@ -250,11 +251,6 @@ function generateLeaf() {
 // Event handlers................................................
 
 // Initialization................................................  
-thrusterContext.strokeStyle = 'rgba(100,140,230,0.6)';
-thrusterContext.shadowColor = 'rgba(0,0,0,0.3)';
-thrusterContext.shadowBlur = 6;
-thrusterContext.shadowX = 4;
-thrusterContext.shadowY = 4;
 
 
 //ledge.left = LEDGE_LEFT;
