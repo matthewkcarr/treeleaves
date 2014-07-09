@@ -16,7 +16,7 @@ var canvas = document.querySelector('#canvas'),
 		LEAF_ANIMATION_TIME = 6,
     fps = 60,
 
-    PLATFORM_HEIGHT_IN_METERS = 5, // 10 meters
+    PLATFORM_HEIGHT_IN_METERS = 15, // 10 meters
     pixelsPerMeter = (canvas.height) /
                       PLATFORM_HEIGHT_IN_METERS,
 
@@ -78,12 +78,9 @@ var canvas = document.querySelector('#canvas'),
       }
     },
 		leaves = new Array();
-	console.log("canvas height is");
-	console.log(canvas.height);
 
 
 function paintLeaf(sprite, context) {
-  context.drawImage(treeImage, 0, 0);
 	context.save();
 	context.beginPath();
 	var LEAF_LENGTH = 60;
@@ -197,6 +194,7 @@ function animate(time) {
    fps = calculateFps(time);
 
    context.clearRect(0,0,canvas.width,canvas.height);
+   context.drawImage(treeImage, 0, 0);
    //drawGrid('lightgray', 10, 10);
    
 	 //paintLeaves(context);
@@ -205,6 +203,9 @@ function animate(time) {
 		 if( ! leaf.animating ) {
 		   leaves.splice( i, 1 ); //remove leaf from array if no longer animating
 		 }
+   }
+	 for( var i = 0; i < leaves.length; i++ ) {
+		 var leaf = leaves[i];
 		 leaf.update(context, time);
 	 }
    //ledge.update(context, time);
@@ -259,4 +260,4 @@ function generateLeaf() {
 
 treeImage.src = 'tree_for_leaves.png';
 window.requestNextAnimationFrame(animate);
-setInterval( generateLeaf, 800);
+setInterval( generateLeaf, 400);
